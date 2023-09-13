@@ -79,12 +79,8 @@ public class CharacterController : MonoBehaviour
         jumpInput = Input.GetKeyDown(KeyCode.Space);
         float currentSpeed = runSpeedMax;
         Move(horizontalInput, currentSpeed, jumpInput);
-
-
     }
 
-    
-   
 
     private void Move(float hInput, float speed, bool jInput)
     {
@@ -122,7 +118,6 @@ public class CharacterController : MonoBehaviour
 
     private void CheckIsGrounded()
     {
-        //CHECK IF THE CHARACTER IS ON GROUND
         isGrounded = false;
         Vector2 worldPos = transform.position;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos + posBot, groundCheckRadius);
