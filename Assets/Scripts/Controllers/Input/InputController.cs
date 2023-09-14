@@ -7,6 +7,8 @@ namespace Game {
         InGameUIManager inGameManagerUI;
         private float horizontalInput;
         private bool jumpInput;
+        private bool inputRunning;
+        private bool inputCrouch;
         public void Init(InGameUIManager inGameUI) {
             inGameManagerUI = inGameUI;
         }
@@ -14,7 +16,8 @@ namespace Game {
         private void Update() {
 #if UNITY_EDITOR || UNITY_STANDALONE //using pc controller
             PcInput();
-            inGameManagerUI.inGameManager.playerContoller.playerMoving.Move(horizontalInput, jumpInput);
+            inGameManagerUI.inGameManager.playerContoller.playerMoving.Move(
+                horizontalInput, jumpInput);
 #endif
 
 #if UNITY_IOS || UNITY_ANDROID //using mobile controller
@@ -39,6 +42,20 @@ namespace Game {
         private void PcInput() {
             horizontalInput = Input.GetAxis("Horizontal");
             jumpInput = Input.GetKeyDown(KeyCode.Space);
+
+            if (Input.GetKeyDown(KeyCode.S)) {
+                inGameManagerUI.inGameManager.playerContoller.playerMoving.ChangeCrouching(true);
+            }
+            else if (Input.GetKeyUp(KeyCode.S)) {
+                inGameManagerUI.inGameManager.playerContoller.playerMoving.ChangeCrouching(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                inGameManagerUI.inGameManager.playerContoller.playerMoving.ChageRun(true);
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift)) {
+                inGameManagerUI.inGameManager.playerContoller.playerMoving.ChageRun(false);
+            }
         }
     }
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589ff598bf9df7b45adac284b24ded1d, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  walkSpeedMax: 2.5
+  walkAcc: 10
+  runSpeedMax: 5
+  runAcc: 8
+  groundBrakeAcc: 6
+  airBrakeAcc: 1
+  jumpSpeed: 5
+  jumpCooldown: 0.55
+  jumpGravityMutiplier: 0.6
+  fallGravityMutiplier: 1.3
+  crouchSpeedMax: 1
+  crouchAcc: 8
+  isGrounded: 1
+  groundCheckRadius: 0.17

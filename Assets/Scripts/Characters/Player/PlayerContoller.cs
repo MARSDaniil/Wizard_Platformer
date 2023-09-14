@@ -3,19 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Game.Character.Player {
     public class PlayerContoller :ControllerOfCharacter {
-        [Header("Manager")]
-        [Space]
         [Header("Controller")]
         public PlayerMoving playerMoving;
-       
+        public PlayerAnimation playerAnimation;
         public void Init() {
             SetTopBottonPosition();
-            playerMoving.Init(rb2d, collider2d, posBot,
-                characterInfo.jumpSpeed, characterInfo.jumpCooldown,
-                characterInfo.jumpGravityMutiplier,characterInfo.fallGravityMutiplier
-                ,characterInfo.runSpeedMax
-                ,characterInfo.groundCheckRadius
-                );
+            playerMoving.Init(rb2d, collider2d, posBot);
         }
         
         private void SetTopBottonPosition() {

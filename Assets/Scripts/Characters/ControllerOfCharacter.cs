@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Game.Character {
     public class ControllerOfCharacter :MonoBehaviour {
-        [SerializeField] protected CharacterInfo characterInfo;
+        
         [Space]
         [Header("Ground")]
         protected Vector2 posBot;
