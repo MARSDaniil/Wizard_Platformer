@@ -12,5 +12,35 @@ namespace Game.Character {
         [Header("Colliders")]
         [SerializeField] protected CapsuleCollider2D collider2d;
         [SerializeField] protected Rigidbody2D rb2d;
+
+        [Header("Controller")]
+        public CharacterMoving characterMoving;
+        public CharacterAnimation characterAnimation;
+        public CharacterBody characterBody;
+        public CharacterAttack characterAttack;
+
+        public GameObject Weapon {
+            get {
+                if (characterBody.weaponSlot.childCount <= 0) return null;
+                return characterBody.weaponSlot.GetChild(0).gameObject;
+            }
+        }
+
+        public GameObject DetachWeapon() {
+            if (characterBody.weaponSlot.childCount <= 0) return null;
+            GameObject weapon = characterBody.weaponSlot.GetChild(0).gameObject;
+
+            var c = weapon.GetComponent<Collider2D>();
+            if (!c) return null;
+            c.isTrigger = false;
+
+            var r = weapon.GetComponent<Rigidbody2D>();
+            if (!r) return null;
+            r.bodyType = RigidbodyType2D.Dynamic;
+
+            weapon.transform.parent = null;
+
+            return weapon;
+        }
     }
 }

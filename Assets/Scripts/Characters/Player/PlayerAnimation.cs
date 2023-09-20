@@ -12,5 +12,16 @@ namespace Game.Character.Player {
         }
         [SerializeField, HideInInspector]
         private bool isCrouching;
+
+        public AttackActionType AttackAction {
+            get { return attackAction; }
+            set {
+                attackAction = value;
+
+                animator.SetInteger("AttackAction", (int)attackAction);
+            }
+        }
+        private AttackActionType attackAction = AttackActionType.ArchShoot;
+
     }
 }

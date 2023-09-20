@@ -28,7 +28,7 @@ namespace Game.Character {
             }
             set {
                 movingBlend = value;
-                animator.SetFloat("MovingBlend", movingBlend);
+                animator.SetFloat("MoveBlend", movingBlend);
             }
         }
         [SerializeField, HideInInspector]
@@ -39,14 +39,13 @@ namespace Game.Character {
         public void InjuredBack() {
             animator.SetTrigger("InjuredBack");
         }
-        public void Attack() {
-            animator.SetTrigger("Attack");
-        }
+       
         public float SpeedVertical {
             get { return speedVertical; }
             set {
                 speedVertical = value;
-                animator.SetFloat("SpeedVertical", speedVertical);
+                
+                animator.SetFloat("VelocityY", speedVertical);
             }
         }
         private float speedVertical;
@@ -60,6 +59,24 @@ namespace Game.Character {
         }
         [SerializeField, HideInInspector]
         private bool isGrounded;
+        
+
+        public bool IsAttacking {
+            get { return isAttacking; }
+            set {
+                isAttacking = value;
+                animator.SetBool("IsAttacking", isAttacking);
+            }
+        }
+        [SerializeField, HideInInspector]
+        private bool isAttacking;
+
+        public void Attack() {
+            animator.SetTrigger("Attack");
+            animator.SetInteger("AttackAction", 0);
+        }
+
+
         public enum ExpressionType {
             Normal,
             Injured,
@@ -70,6 +87,15 @@ namespace Game.Character {
             Shy,
             Sick,
             CatFace
+        }
+
+        public enum AttackActionType {
+            Swipe,
+            Stab,
+            Point,
+            Summon,
+            MageShoot,
+            ArchShoot
         }
     }
 }

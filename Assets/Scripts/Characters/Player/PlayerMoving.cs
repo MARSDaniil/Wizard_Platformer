@@ -15,17 +15,16 @@ namespace Game.Character.Player {
             playerContoller = GetComponent<PlayerContoller>();
             base.Init(rigidbody, collider, BotPos);
         }
-
+        
         public void Move(float hInput, bool jInput) {
             base.Move(hInput, jInput);
 
-            if (isGrounded) playerContoller.playerAnimation.IsCrouching = inputCrouch;
+           // if (IsGrounded) playerContoller.playerAnimation.IsCrouching = inputCrouch;
 
-            playerContoller.playerAnimation.SpeedVertical = rb2d.velocity.y;
-            playerContoller.playerAnimation.MovingBlend = Mathf.Abs(rb2d.velocity.x) / characterInfo.runSpeedMax;
-            playerContoller.playerAnimation.Facing = Mathf.RoundToInt(hInput);
-
-            playerContoller.playerAnimation.IsGrounded = isGrounded;
+            playerContoller.characterAnimation.SpeedVertical = rb2d.velocity.y;
+            playerContoller.characterAnimation.MovingBlend = moveBlend;
+            playerContoller.characterAnimation.Facing = Mathf.RoundToInt(hInput);
+            playerContoller.characterAnimation.IsGrounded = IsGrounded;
         }
     }
 }
