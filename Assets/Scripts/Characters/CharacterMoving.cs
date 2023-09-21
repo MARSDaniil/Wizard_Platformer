@@ -5,10 +5,17 @@ using Game.Component;
 namespace Game.Character {
     public class CharacterMoving :Move {
 
+        ControllerOfCharacter characterController;
+
         public MovementType defaultMovement = MovementType.Walk;
         [SerializeField] protected CharacterInfo characterInfo;
         protected Collider2D collider2D { get; set; }
         protected Vector2 posBot;
+
+        public Vector2 InputTarget {
+            set { inputTarget = value; }
+        }
+        protected Vector2 inputTarget = Vector2.zero;
 
         public int facing = 1;
         #region - MOVE -
@@ -22,7 +29,17 @@ namespace Game.Character {
             get { return isRunning; }
             set { isRunning = value; }
         }
-
+        public float MoveBlend {
+            get { return moveBlend; }
+        }
+        public bool IsGrounded {
+            get { return isGrounded; }
+            private set {
+                if (isGrounded == value) return;
+                isGrounded = value;
+            }
+        }
+        public bool isGrounded;
 
         protected bool isMoving;                                      
         protected bool isRunning; 
@@ -36,11 +53,14 @@ namespace Game.Character {
             rb2d = rigidbody;
             collider2D = collider;
             posBot = BotPos;
+           if(characterController == null) characterController = GetComponent<ControllerOfCharacter>();
+            
         }
-        public virtual void Move(float hInput,  bool jInput) {
+        public virtual void Move(float hInput,  bool jInput, bool running = false) {
             if (isDead) return;
 
             isMoving = (Mathf.Abs(hInput) > 0.05f);
+            inputRunning = running;
 
             Vector2 curVel = rb2d.velocity;
 
@@ -106,7 +126,6 @@ namespace Game.Character {
             moveBlend = Mathf.Lerp(moveBlend, targetMoveBlend, 7.0f * Time.deltaTime);
         }
 
-        public void ChageRun(bool value) => inputRunning = value;
         #endregion
 
 
@@ -242,14 +261,60 @@ namespace Game.Character {
         */
         #endregion
 
-        public bool IsGrounded {
-            get { return isGrounded; }
-            private set {
-                if (isGrounded == value) return;
-                isGrounded = value;
+        #region - Select Target -
+
+        private const float POINT_AT_TARGET_LERP_SPEED = 7.5f;
+        private static readonly Vector2 ARM_ROT_RANGE = new Vector2(-80.0f, 70.0f);
+
+        private float spine1Rot;
+        private float spine2Rot;
+
+        private Vector3 rot;
+        public bool IsPointingAtTarget {
+            get { return isPointingAtTarget; }
+            set {
+                if (isPointingAtTarget == value) return;
+                isPointingAtTarget = value;
+
+                targetArmRot = 0.0f;
             }
         }
-        public bool isGrounded;
+        private bool isPointingAtTarget;
+
+        private float targetArmRot;
+
+        private float pointAtTargetPercent;
+
+        public Vector2 PointAtTargetDirection {
+            get {
+                return (inputTarget - (Vector2)characterController.characterBody.rigUpperArmR.position).normalized;
+            }
+        }
+
+        public void PointAtTarget(bool IsDrawingBow) {
+            bool shouldPointAtTarget = false;
+            if (IsDrawingBow) shouldPointAtTarget = true;
+
+            IsPointingAtTarget = shouldPointAtTarget;
+            pointAtTargetPercent = Mathf.Lerp(pointAtTargetPercent, isPointingAtTarget ? 1.0f : 0.0f, POINT_AT_TARGET_LERP_SPEED * Time.deltaTime);
+            targetArmRot = Vector2.Angle(Vector2.up, PointAtTargetDirection) - 90.0f;
+
+            targetArmRot = Mathf.Clamp(targetArmRot, ARM_ROT_RANGE.x, ARM_ROT_RANGE.y);
+
+            targetArmRot = targetArmRot + spine1Rot + spine2Rot + characterController.characterBody.rigPelvis.transform.localRotation.eulerAngles.z;
+            rot = characterController.characterBody.rigUpperArmR.rotation.eulerAngles;
+
+            rot.z += Mathf.LerpAngle(0.0f, targetArmRot, pointAtTargetPercent);
+            characterController.characterBody.rigUpperArmR.rotation = Quaternion.Euler(rot);
+            Debug.Log(Quaternion.Euler(rot));
+            if (IsDrawingBow) {
+                rot = characterController.characterBody.rigUpperArmL.rotation.eulerAngles;
+                rot.z += Mathf.LerpAngle(0.0f, targetArmRot, pointAtTargetPercent);
+                characterController.characterBody.rigUpperArmL.rotation = Quaternion.Euler(rot);
+            }
+        }
+
+        #endregion
 
         private void Update() {
             CheckIsGrounded();
@@ -276,10 +341,5 @@ namespace Game.Character {
             Vector2 worldPos = transform.position;
             Gizmos.DrawWireSphere(worldPos + posBot, characterInfo.groundCheckRadius);
         }
-
-        public void ChangeIsGrounded(bool value) => isGrounded = value;
-
-        
-        public void ChangeCrouching(bool value) => inputCrouch = value;
     }
 }

@@ -18,7 +18,7 @@ namespace Game {
 
         private void Init() {
             inGameUIManager.Init();
-            playerContoller.Init();
+            playerContoller.Init(this);
         }
     }
 }

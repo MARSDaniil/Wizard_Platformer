@@ -12,5 +12,9 @@ namespace Game {
         public void Init() {
             inputController.Init(this);
         }
+
+        public InputController GetInput {
+            get { return inputController; }
+        }
     }
 }

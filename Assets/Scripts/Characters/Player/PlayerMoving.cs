@@ -11,20 +11,17 @@ namespace Game.Character.Player {
         }
         */
         PlayerContoller playerContoller;
-        public void Init(Rigidbody2D rigidbody, Collider2D collider, Vector2 BotPos) {
+        public override void Init(Rigidbody2D rigidbody, Collider2D collider, Vector2 BotPos) {
             playerContoller = GetComponent<PlayerContoller>();
             base.Init(rigidbody, collider, BotPos);
         }
         
-        public void Move(float hInput, bool jInput) {
-            base.Move(hInput, jInput);
+        public override void Move(float hInput, bool jInput, bool run) {
+            base.Move(hInput, jInput,run);
 
-           // if (IsGrounded) playerContoller.playerAnimation.IsCrouching = inputCrouch;
-
-            playerContoller.characterAnimation.SpeedVertical = rb2d.velocity.y;
-            playerContoller.characterAnimation.MovingBlend = moveBlend;
-            playerContoller.characterAnimation.Facing = Mathf.RoundToInt(hInput);
-            playerContoller.characterAnimation.IsGrounded = IsGrounded;
+           
         }
+
+        
     }
 }

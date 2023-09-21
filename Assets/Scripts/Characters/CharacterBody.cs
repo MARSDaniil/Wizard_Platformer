@@ -17,13 +17,11 @@ namespace Game.Character {
         [Space]
         public Transform weaponSlot;
 
-        private void SyncWeaponSlot() {
+        public void SyncWeaponSlot() {
             weaponSlot.transform.position = rigWeapon.transform.position;
             weaponSlot.transform.rotation = rigWeapon.transform.rotation * Quaternion.Euler(0.0f, 0.0f, 180.0f);
         }
 
-        private void FixedUpdate() {
-            SyncWeaponSlot();
-        }
+        
     }
 }

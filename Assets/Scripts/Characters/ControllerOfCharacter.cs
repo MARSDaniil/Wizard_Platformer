@@ -13,17 +13,16 @@ namespace Game.Character {
         [SerializeField] protected CapsuleCollider2D collider2d;
         [SerializeField] protected Rigidbody2D rb2d;
 
-        [Header("Controller")]
-        public CharacterMoving characterMoving;
-        public CharacterAnimation characterAnimation;
+
+
+        [HideInInspector]
         public CharacterBody characterBody;
+        [HideInInspector]
         public CharacterAttack characterAttack;
 
-        public GameObject Weapon {
-            get {
-                if (characterBody.weaponSlot.childCount <= 0) return null;
-                return characterBody.weaponSlot.GetChild(0).gameObject;
-            }
+        public virtual void Init(InGameManager inGame) {
+            characterAttack = GetComponent<CharacterAttack>();
+            characterBody = GetComponent<CharacterBody>();
         }
 
         public GameObject DetachWeapon() {

@@ -54,9 +54,15 @@ namespace Game.Character {
         private WeaponBow bow;
         private bool isArrowReady;
 
-        private bool isAttacking;
-        private int attackActionIndex;
 
+        public bool IsAttacking {
+            get { return isAttacking; }
+        }
+        private bool isAttacking;
+        public int AttackActionIndex {
+            get { return attackActionIndex; }
+        }
+        private int attackActionIndex;
 
         public bool IsDrawingBow {
             get { return isDrawingBow; }
@@ -147,7 +153,8 @@ namespace Game.Character {
         }
         
         public void OnThrow() {
-            if (characterController.Weapon == null) return;
+            /*
+            if (Weapon == null) return;
             var weapon = characterController.DetachWeapon().GetComponent<Rigidbody2D>();
             
             weapon.velocity = characterController.characterMoving.RbVelocity;
@@ -163,20 +170,20 @@ namespace Game.Character {
             onThrow.Invoke();
         
         }
-
+        public virtual GameObject Weapon {
+            get { return null; }
+        }
         public void ArcheryUpdate() {
             if (bow && IsStringPulled) bow.StringPullPos = characterController.characterBody.rigHandL.position;
         }
-        private void Update() {
-            ArcheryUpdate();
-        }
-        public virtual void Attack(bool inputAttack, bool inputAttackContinuous) {
+        
+        public virtual void Attack(bool inputAttack) {
             isAttacking = false;
             //attackActionIndex = inputMelee ? (int)attackActionMelee : (int)attackAction;
             attackActionIndex = 21;
 
             
-                if (isCrawling == false && characterController.Weapon && characterController.Weapon.TryGetComponent<WeaponBow>(out bow)) {
+                if (isCrawling == false && Weapon && Weapon.TryGetComponent<WeaponBow>(out bow)) {
                     IsDrawingBow = inputAttack;
                 }
             /*

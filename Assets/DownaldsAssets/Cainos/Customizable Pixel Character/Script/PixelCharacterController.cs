@@ -875,7 +875,7 @@ namespace Cainos.CustomizablePixelCharacter
             rot = character.rigUpperArmR.rotation.eulerAngles;
             rot.z += Mathf.LerpAngle(0.0f, targetArmRot, pointAtTargetPercent);
             character.rigUpperArmR.rotation = Quaternion.Euler(rot);
-
+            
             if (IsDrawingBow)
             {
                 rot = character.rigUpperArmL.rotation.eulerAngles;
@@ -2120,13 +2120,13 @@ namespace Cainos.CustomizablePixelCharacter
             rb2d.gravityScale = gravityScale;
             rb2d.velocity = velocity;
         }
-
+        
         private void LateUpdate()
         {
-            LookAtTarget();
+           // LookAtTarget();
             PointAtTarget();
         }
-
+        
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.TryGetComponent<Ladder>(out Ladder ladder))
