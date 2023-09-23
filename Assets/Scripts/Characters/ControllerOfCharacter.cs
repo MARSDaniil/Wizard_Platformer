@@ -19,10 +19,12 @@ namespace Game.Character {
         public CharacterBody characterBody;
         [HideInInspector]
         public CharacterAttack characterAttack;
-
+       
         public virtual void Init(InGameManager inGame) {
             characterAttack = GetComponent<CharacterAttack>();
             characterBody = GetComponent<CharacterBody>();
+
+            
         }
 
         public GameObject DetachWeapon() {
@@ -41,5 +43,7 @@ namespace Game.Character {
 
             return weapon;
         }
+
+       
     }
 }

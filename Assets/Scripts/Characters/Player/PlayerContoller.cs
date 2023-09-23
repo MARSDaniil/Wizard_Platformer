@@ -11,6 +11,7 @@ namespace Game.Character.Player {
         [SerializeField] PlayerMoving playerMoving;
         [SerializeField] PlayerAnimation playerAnimation;
         [SerializeField] PlayerAttack playerAttack;
+        public PlayerState playerState;
         public override void Init(InGameManager manager) {
             base.Init(manager);
             SetTopBottonPosition();
@@ -18,6 +19,8 @@ namespace Game.Character.Player {
             inputController = inGameManager.inGameUIManager.GetInput;
             playerMoving.Init(rb2d, collider2d, posBot);
             playerAttack.Init(this);
+
+            playerState.Init(this);
         }
         
         private void SetTopBottonPosition() {
@@ -50,7 +53,13 @@ namespace Game.Character.Player {
             playerAnimation.Facing = Mathf.RoundToInt(inputController.HorizontalInput);
             playerAnimation.IsGrounded = playerMoving.IsGrounded;
         }
-        
+        private void OnTriggerEnter2D(Collider2D collision) {
+
+            if (collision.gameObject.TryGetComponent<ArrowDetect>(out ArrowDetect arrowDetect)) {
+                playerState.ChangeState();
+            }
+
+        }
 
     }
 }

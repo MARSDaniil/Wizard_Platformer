@@ -7,17 +7,14 @@ using Game.Weapons;
 namespace Game.Character {
     public class CharacterAttack :MonoBehaviour {
 
+        //delete after realase inventaty
+        public int countOfArrow = 5;
+        //
 
         public float arrowSpeed = 20.0f;
         public GameObject arrowPrefab;
 
         
-        
-        
-
-
-
-
         public Animator animator;
         protected ControllerOfCharacter characterController;
 
@@ -86,6 +83,7 @@ namespace Game.Character {
                             projectile.Launched = true;
                             projectile.Velocity = arrowSpeed * projectile.transform.right;
 
+                            Shoot();
                             onBowShoot.Invoke();
                         }
                     }
@@ -98,6 +96,10 @@ namespace Game.Character {
             }
         }
         private bool isDrawingBow;
+
+        public virtual void Shoot() {
+            countOfArrow--;
+        }
 
         public bool IsStringPulled {
             get { return isStringPulled; }
@@ -129,7 +131,6 @@ namespace Game.Character {
             projectile = Instantiate(arrowPrefab, characterController.characterBody.rigHandL).GetComponent<Projectile>();
             projectile.transform.localPosition = Vector3.zero;
             projectile.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
-            //projectile.transform.localRotation = Quaternion.identity;
 
             IsArrowDrawn = true;
         }
@@ -179,6 +180,8 @@ namespace Game.Character {
         
         public virtual void Attack(bool inputAttack) {
             isAttacking = false;
+
+            if (countOfArrow <= 0) return;
             //attackActionIndex = inputMelee ? (int)attackActionMelee : (int)attackAction;
             attackActionIndex = 21;
 

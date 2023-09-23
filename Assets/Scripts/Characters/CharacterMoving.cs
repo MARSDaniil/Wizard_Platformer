@@ -306,7 +306,6 @@ namespace Game.Character {
 
             rot.z += Mathf.LerpAngle(0.0f, targetArmRot, pointAtTargetPercent);
             characterController.characterBody.rigUpperArmR.rotation = Quaternion.Euler(rot);
-            Debug.Log(Quaternion.Euler(rot));
             if (IsDrawingBow) {
                 rot = characterController.characterBody.rigUpperArmL.rotation.eulerAngles;
                 rot.z += Mathf.LerpAngle(0.0f, targetArmRot, pointAtTargetPercent);

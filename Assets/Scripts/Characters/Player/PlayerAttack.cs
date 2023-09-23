@@ -8,6 +8,7 @@ namespace Game.Character.Player {
         public override void Init(ControllerOfCharacter character) {
             base.Init(character);
             playerContoller = GetComponent<PlayerContoller>();
+            playerContoller.playerState.ChangeCountOfArrow(countOfArrow);
         }
 
         public override GameObject Weapon {
@@ -20,6 +21,11 @@ namespace Game.Character.Player {
         public override void Attack(bool inputAttack) {
             base.Attack(inputAttack);
            // playerContoller.playerAnimation.IsAttacking = inputAttackContinuous;
+        }
+
+        public override void Shoot() {
+            base.Shoot();
+            playerContoller.playerState.ChangeCountOfArrow(countOfArrow);
         }
     }
 }
