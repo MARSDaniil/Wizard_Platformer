@@ -436,7 +436,6 @@ namespace Cainos.CustomizablePixelCharacter
         }
         private int facing = 1;
 
-        // is the character dead? if dead, plays dead animation.
         [FoldoutGroup("Runtime"), ShowInInspector, DisableInEditMode]
         public bool IsDead
         {

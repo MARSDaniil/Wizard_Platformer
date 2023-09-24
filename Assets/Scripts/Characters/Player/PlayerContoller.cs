@@ -8,9 +8,9 @@ namespace Game.Character.Player {
 
         InputController inputController;
         [Header("Controller")]
-        [SerializeField] PlayerMoving playerMoving;
-        [SerializeField] PlayerAnimation playerAnimation;
-        [SerializeField] PlayerAttack playerAttack;
+        public PlayerMoving playerMoving;
+        public PlayerAnimation playerAnimation;
+        public PlayerAttack playerAttack;
         public PlayerState playerState;
         public override void Init(InGameManager manager) {
             base.Init(manager);
@@ -20,7 +20,7 @@ namespace Game.Character.Player {
             playerMoving.Init(rb2d, collider2d, posBot);
             playerAttack.Init(this);
 
-            playerState.Init(this);
+            playerState.Init();
         }
         
         private void SetTopBottonPosition() {
@@ -47,7 +47,7 @@ namespace Game.Character.Player {
             playerMoving.PointAtTarget(playerAttack.IsDrawingBow);
         }
         private void UpdateAnimation() {
-            //move 
+            if (isDead) return;
             playerAnimation.SpeedVertical = playerMoving.RbVelocity.y;
             playerAnimation.MovingBlend = playerMoving.MoveBlend;
             playerAnimation.Facing = Mathf.RoundToInt(inputController.HorizontalInput);
@@ -59,6 +59,19 @@ namespace Game.Character.Player {
                 playerState.ChangeState();
             }
 
+        }
+
+        public override bool IsDead {
+            get { return isDead; }
+            set {
+                playerAttack.IsDead = value;
+                playerMoving.IsDead = value;
+
+                playerAnimation.IsDead = value;
+                rb2d.simulated = !value;
+
+                DetachWeapon();
+            }
         }
 
     }

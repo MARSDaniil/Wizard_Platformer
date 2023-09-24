@@ -15,7 +15,6 @@ namespace Game.Character {
         public GameObject arrowPrefab;
 
         
-        public Animator animator;
         protected ControllerOfCharacter characterController;
 
         [Space]
@@ -91,11 +90,12 @@ namespace Game.Character {
                     isArrowReady = false;
                     IsStringPulled = false;
                 }
-
-                animator.SetBool("IsDrawingBow", isDrawingBow);
+                SetIsDrawingBow(isDrawingBow);
             }
         }
         private bool isDrawingBow;
+
+        protected virtual void SetIsDrawingBow(bool value) { }
 
         public virtual void Shoot() {
             countOfArrow--;
@@ -118,11 +118,11 @@ namespace Game.Character {
             get { return isArrowDrawn; }
             set {
                 isArrowDrawn = value;
-                animator.SetBool("IsArrowDrawn", isArrowDrawn);
+                SetIsArrowDrawn(isArrowDrawn);
             }
         }
         private bool isArrowDrawn;
-
+        protected virtual void SetIsArrowDrawn(bool value) { }
         public void OnArrowDraw() {
             if (bow == null) return;
             if (arrowPrefab == null) return;
@@ -180,7 +180,8 @@ namespace Game.Character {
         
         public virtual void Attack(bool inputAttack) {
             isAttacking = false;
-
+            if (isDead) return;
+            
             if (countOfArrow <= 0) return;
             //attackActionIndex = inputMelee ? (int)attackActionMelee : (int)attackAction;
             attackActionIndex = 21;
@@ -198,9 +199,13 @@ namespace Game.Character {
             isAttacking = inputAttack 
                 //|| inputMelee
                 ;
-            animator.SetInteger("AttackAction", attackActionIndex);
-            animator.SetBool("IsAttacking", isAttacking);
+            SetAttackAction(attackActionIndex);
+            SetIsAttacking(isAttacking);
         }
+
+        protected virtual void SetIsAttacking(bool value) { }
+        protected virtual void SetAttackAction(int value) { }
+
         public enum AttackActionMeleeType {
             None = 0,
 

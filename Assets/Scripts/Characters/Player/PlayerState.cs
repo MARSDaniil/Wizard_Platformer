@@ -8,13 +8,14 @@ namespace Game.Character.Player {
         PlayerContoller playerContoller;
         
 
-        public override void Init(PlayerContoller contoller) {
+        public override void Init() {
             base.Init();
-            playerContoller = contoller;
+            playerContoller = GetComponent<PlayerContoller>();
+            if (playerContoller == null) Debug.Log("controller null in player state");
         }
 
         public override void Dead() {
-
+            playerContoller.IsDead = true;
         }
     }
 }

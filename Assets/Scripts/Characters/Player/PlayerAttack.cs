@@ -27,5 +27,14 @@ namespace Game.Character.Player {
             base.Shoot();
             playerContoller.playerState.ChangeCountOfArrow(countOfArrow);
         }
+
+        protected override void SetIsDrawingBow(bool value) =>
+            playerContoller.playerAnimation.SetIsDrawingBow = value;
+        protected override void SetIsArrowDrawn(bool value) =>
+            playerContoller.playerAnimation.SetIsArrowDrawn = value;
+        protected override void SetIsAttacking(bool value) =>
+            playerContoller.playerAnimation.SetIsAttacking = value;
+        protected override void SetAttackAction(int value) =>
+            playerContoller.playerAnimation.SetAttackAction = value;
     }
 }

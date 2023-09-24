@@ -2123,7 +2123,7 @@ namespace Cainos.CustomizablePixelCharacter
         
         private void LateUpdate()
         {
-           // LookAtTarget();
+            LookAtTarget();
             PointAtTarget();
         }
         

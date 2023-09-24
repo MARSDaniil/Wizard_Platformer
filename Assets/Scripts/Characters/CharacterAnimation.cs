@@ -9,6 +9,7 @@ namespace Game.Character {
         public int Facing {
             get { return facing; }
             set {
+                if (IsDead == true) return;
                 if (value == 0) return;
                 facing = value;
 
@@ -71,11 +72,26 @@ namespace Game.Character {
         [SerializeField, HideInInspector]
         private bool isAttacking;
 
-        public void Attack() {
-            animator.SetTrigger("Attack");
-            animator.SetInteger("AttackAction", 0);
+        public bool IsDead {
+            get { return isDead; }
+            set {
+                isDead = value;
+                animator.SetBool("IsDead", value);
+            }
         }
-
+        private bool isDead = false;
+        public bool SetIsDrawingBow {
+            set { animator.SetBool("IsDrawingBow", value); }
+        }  
+        public bool SetIsArrowDrawn {
+            set { animator.SetBool("IsArrowDrawn", value); }
+        }
+        public bool SetIsAttacking {
+            set { animator.SetBool("IsAttacking", value); }
+        }
+        public int SetAttackAction {
+            set { animator.SetInteger("AttackAction", value); }
+        }
 
         public enum ExpressionType {
             Normal,

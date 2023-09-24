@@ -48,9 +48,12 @@ namespace Cainos.PixelArtMonster_Dungeon
                     controller.inputJump = inputJump;
                     controller.inputAttack = inputAttack;
                 }
-                if (controllerFlying)
-                {
+                if (controllerFlying) {
+
                     controllerFlying.inputAttack = inputAttack;
+                }
+                else {
+                    
                 }
             }
 

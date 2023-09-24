@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using Game.Character.Zombie;
 namespace Cainos.PixelArtMonster_Dungeon
 {
     public class MonsterController : MonoBehaviour
     {
+        
+
         //MOVEMENT PARAMETERS
         public MovementType defaultMovement = MovementType.Walk;
 
@@ -38,6 +40,7 @@ namespace Cainos.PixelArtMonster_Dungeon
         public bool inputMoveModifier = false;                      // switch between walk and run
         public bool inputJump = false;                              // jump input
         public bool inputAttack = false;                            // attack input
+       // public bool inputAttack = true;                            // attack input
 
 
         [ExposeProperty]                                            // is the character dead? if dead, plays dead animation and disable control
@@ -46,8 +49,18 @@ namespace Cainos.PixelArtMonster_Dungeon
             get { return isDead; }
             set
             {
+                rb2d.simulated = !value;
+
                 isDead = value;
+                //delete after test task
                 pm.IsDead = isDead;
+                if(value == true) {
+                    zombieState.playerInfo.Close();
+                }
+                else {
+                    zombieState.playerInfo.Open();
+                }
+                //
             }
         }                    
         private bool isDead;
@@ -66,6 +79,10 @@ namespace Cainos.PixelArtMonster_Dungeon
         private Collider2D[] groundCheckResult = new Collider2D[2];
         private ContactFilter2D contactFilter2D = new ContactFilter2D();
 
+        //delete after test task
+        protected CapsuleCollider2D collider2dCapsule;
+        public ZombieState zombieState;
+        //
         private void Awake()
         {
             pm = GetComponent<PixelMonster>();
@@ -74,10 +91,20 @@ namespace Cainos.PixelArtMonster_Dungeon
 
             contactFilter2D.NoFilter();
             contactFilter2D.useTriggers = false;
+
+
+
+            //delete after test task
+            collider2dCapsule = GetComponent<CapsuleCollider2D>();
+            zombieState = GetComponent<ZombieState>();
+            inputAttack = true;
+            zombieState.Init();
+            //
         }
 
         private void Update()
         {
+            if (isDead) return;
             //set should the character walk or run base on input and default movement type
             bool shouldRun = false;
             if (defaultMovement == MovementType.Walk && inputMoveModifier) shouldRun = true;
@@ -94,7 +121,11 @@ namespace Cainos.PixelArtMonster_Dungeon
 
             //perform move and attack
             Move(inputMove.x, shouldRun, inputJump);
-            Attack( inputAttack );
+
+            Attack(inputAttack);
+            //delete after test task
+            if (inputAttack && canChange) StartCoroutine(AttackActivate());
+            //
 
             //CHECK IF THE CHARACTER IS ON GROUND
             isGrounded = false;
@@ -110,6 +141,15 @@ namespace Cainos.PixelArtMonster_Dungeon
             {
                 if (jumpCdTimer < jumpCooldown) jumpCdTimer += Time.deltaTime;
             }
+        }
+        private bool canChange = true;
+        private IEnumerator AttackActivate() {
+            canChange = false;
+            yield return new WaitForSeconds(0.1f);
+            inputAttack = false;
+            yield return new WaitForSeconds(5f);
+            inputAttack = true;
+            canChange = true;
         }
 
         public void Attack( bool inputAttack)
@@ -228,7 +268,13 @@ namespace Cainos.PixelArtMonster_Dungeon
             pm.Facing = Mathf.RoundToInt(inputH);
             pm.IsGrounded = isGrounded;
         }
+        private void OnTriggerEnter2D(Collider2D collision) {
+            
+            if (collision.gameObject.TryGetComponent<PlayerArrow>(out PlayerArrow arrowDetect)) {
+                zombieState.ChangeState();
+            }
 
+        }
         public enum MovementType
         {
             Walk,

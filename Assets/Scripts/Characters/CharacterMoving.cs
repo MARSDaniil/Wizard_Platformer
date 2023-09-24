@@ -46,6 +46,9 @@ namespace Game.Character {
 
         private bool inputRunning = false;
         
+        public bool IsDead {
+            set { isDead = value; }
+        }
         protected bool isDead = false;
 
         protected bool inputCrouch = false;

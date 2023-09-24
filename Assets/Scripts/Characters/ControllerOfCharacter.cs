@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Game.Character {
     public class ControllerOfCharacter :MonoBehaviour {
-        
+
         [Space]
         [Header("Ground")]
         protected Vector2 posBot;
@@ -19,12 +19,12 @@ namespace Game.Character {
         public CharacterBody characterBody;
         [HideInInspector]
         public CharacterAttack characterAttack;
-       
+
         public virtual void Init(InGameManager inGame) {
             characterAttack = GetComponent<CharacterAttack>();
             characterBody = GetComponent<CharacterBody>();
 
-            
+
         }
 
         public GameObject DetachWeapon() {
@@ -44,6 +44,14 @@ namespace Game.Character {
             return weapon;
         }
 
-       
+        public virtual bool IsDead{
+            set {
+
+            }
+            get {
+                return isDead;
+            }
+        }
+        protected bool isDead = false;
     }
 }

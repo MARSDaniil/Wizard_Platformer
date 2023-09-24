@@ -49,6 +49,8 @@ namespace Cainos.PixelArtMonster_Dungeon
             pm = GetComponent<PixelMonster>();
             collider2d = GetComponent<Collider2D>();
             rb2d = GetComponent<Rigidbody2D>();
+
+            inputAttack = true;
         }
 
         private void Update()
@@ -62,6 +64,11 @@ namespace Cainos.PixelArtMonster_Dungeon
 
             //PERFORM MOVE OR ATTACK BASED ON INPUT
             Move(inputMove);
+
+            //delete after test task
+            if (inputAttack) StartCoroutine(AttackActivate());
+            //
+
             Attack(inputAttack);
 
             //CHECK IF THE CHARACTER IS ON GROUND
@@ -75,7 +82,11 @@ namespace Cainos.PixelArtMonster_Dungeon
 
             pm.IsGrounded = isGrounded;
         }
-
+        private IEnumerator AttackActivate() {
+            inputAttack = false;
+            yield return new WaitForSeconds(5f);
+            inputAttack = true;
+        }
         public void Move( Vector2 inputMove )
         {
             if (IsDead)

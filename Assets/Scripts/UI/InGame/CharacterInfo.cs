@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 namespace Game.UI.InGame {
-    public class PlayerInfo :CharacterInfo {
-
-        public TextMeshProUGUI arrowCount;
+    public class CharacterInfo :MenuWindow {
+        public Slider healthSlider;
+        public Slider defendSlider;
         public override void Init(bool startOpened = false) {
             base.Init(startOpened);
         }
-
-        public void SetArrowCount(int value) => arrowCount.text = value.ToString();
+        public void SetSliderValue(Slider slider, int value) {
+            slider.value = value;
+        }
     }
 }

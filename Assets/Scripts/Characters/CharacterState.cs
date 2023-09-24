@@ -7,11 +7,9 @@ namespace Game.Character {
     public class CharacterState :MonoBehaviour {
 
         [SerializeField] protected CharacterHealth characterHealth;
-        [SerializeField] protected PlayerInfo playerInfo;
+        public PlayerInfo playerInfo;
 
-        public void MinusHealth() {
-
-        }
+        
         public int CurrHealth {
             get { return currHealth; }
             set {
@@ -54,10 +52,10 @@ namespace Game.Character {
 
         public virtual void ChangeState() {
             if(currProtect >= 0) {
-                CurrProtect = (int)Random.Range(-5, -10);
+                CurrProtect = (int)Random.Range(-20, -30);
             }
             else if(currHealth >= 0) {
-                CurrHealth = (int)Random.Range(-10, -20);
+                CurrHealth = (int)Random.Range(-40, -60);
             }
         }
 

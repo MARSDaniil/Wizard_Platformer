@@ -9,12 +9,12 @@ namespace Game.Character {
         private void Awake() {
             controller = GetComponentInParent<ControllerOfCharacter>();
         }
-        /*
+        
         public void OnFootstep(AnimationEvent evt) {
-            controller.OnFootstep(evt);
+          //  controller.OnFootstep(evt);
         }
 
-        */
+        
         #region - ATTACK EVENTS
 
         public void OnAttackStart() {
